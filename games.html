@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>桌遊資訊整理表格</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f2f2f2; cursor: pointer; }
+        img { width: 80px; }
+    </style>
+</head>
+<body>
+
+<h1>桌遊資訊整理表格</h1>
+
+<table id="boardgameTable">
+    <thead>
+        <tr>
+            <th onclick="sortTable(0)">英文</th>
+            <th onclick="sortTable(1)">中文</th>
+            <th onclick="sortTable(2)">年齡</th>
+            <th onclick="sortTable(3)">人數</th>
+            <th onclick="sortTable(4)">時間</th>
+            <th onclick="sortTable(5)">價格</th>
+            <th onclick="sortTable(6)">Tags</th>
+            <th>Youtube</th>
+            <th>桌遊圖片</th>
+            <th>相關網站</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+    </tbody>
+</table>
+
+<script>
+const boardgames = [
+    {
+        enName: "13 CLUES",
+        zhName: "13道線索",
+        age: "8+",
+        players: "2-6",
+        playTime: "30",
+        price: 1190,
+        tags: "大腦 猜心 樂齡 社會 科技",
+        youtube: "https://www.youtube.com/watch?v=xKMt2Cq5s50",
+        imageUrl: "https://cdn.prod.website-files.com/575714cc825e8dbc6c83b98a/6597dc5170eb1818d60ea0cc_13Clues_2020_Box_3D.jpg",
+        website: "https://www.swanpanasia.com/products/13-clues"
+    },
+    {
+        enName: "ALIBI",
+        zhName: "不在場證明",
+        age: "8+",
+        players: "2-5",
+        playTime: "30-45",
+        price: 490,
+        tags: "紙牌 大腦 樂齡 社會 科技",
+        youtube: "https://www.youtube.com/watch?v=ncRQz0olBKc&t=362s",
+        imageUrl: "https://cdn.prod.website-files.com/575714cc825e8dbc6c83b98a/66b5dab24b8fd363334f616e_Alibi_Box_3D_2024.jpg",
+        website: "https://www.swanpanasia.com/products/alibi"
+    },
+    {
+        enName: "BLOODY INN",
+        zhName: "血腥旅社",
+        age: "14+",
+        players: "1-4",
+        playTime: "45-60",
+        price: 1090,
+        tags: "紙牌 輕策略 社會 綜合",
+        youtube: "無",
+        imageUrl: "https://cdn.prod.website-files.com/575714cc825e8dbc6c83b98a/5ab8f1c7f866da4acc167d52_Bloody%20Inn_Box_3D.jpg",
+        website: "https://www.swanpanasia.com/products/the-bloody-inn"
+    },
+    {
+        enName: "CARCASSONNE SAFARI",
+        zhName: "卡卡頌 非洲旅遊",
+        age: "7+",
+        players: "2-5",
+        playTime: "35",
+        price: 1290,
+        tags: "輕策略 樂齡 社會 自然 科技 藝術",
+        youtube: "https://www.youtube.com/watch?v=fQ6vgCpZUA4&t=2s",
+        imageUrl: "https://cdn.prod.website-files.com/575714cc825e8dbc6c83b98a/6204ce064bb5979604e3dccf_Carc_Safari_Box_3D_proof.jpg",
+        website: "https://www.swanpanasia.com/products/carcassonne-safari"
+    },
+    {
+        enName: "FABULA RASA CRIME",
+        zhName: "腦霧證人",
+        age: "8+",
+        players: "2-5",
+        playTime: "20",
+        price: 690,
+        tags: "大腦 言語 樂齡 語文 社會 綜合",
+        youtube: "https://www.youtube.com/watch?v=Exq_V2bTx0U",
+        imageUrl: "https://cdn.prod.website-files.com/575714cc825e8dbc6c83b98a/62e774a743e47bf26b773af0_Fabula_Rasa_Crime_Box.jpg",
+        website: "https://www.swanpanasia.com/products/fabula-rasa-crime"
+    },
+    {
+        enName: "FUGTIVE II",
+        zhName: "神探緝兇",
+        age: "13+",
+        players: "2",
+        playTime: "10-20",
+        price: 0,
+        tags: "舒芸",
+        youtube: "https://www.youtube.com/watch?v=b9YoZ_fKgM4",
+        imageUrl: "https://shoplineimg.com/57fba1b061706917080d8c00/66b9bfde89ba7d0001be601f/800x.webp?source_format=jpg",
+        website: "https://broadwaytw.shoplineapp.com/products/fugitive-ii"
+    },
+    {
+        enName: "INSPECTOR NOSE",
+        zhName: "神探諾斯",
+        age: "7+",
+        players: "2-5",
+        playTime: "20",
+        price: 590,
+        tags: "大腦 合作 言語 樂齡 語文 社會 藝術",
+        youtube: "https://www.youtube.com/watch?v=l8UO4hFVuhE",
+        imageUrl: "https://cdn.prod.website-files.com/575714cc825e8dbc6c83b98a/60b5a2dc0d095a6aee71530f_Inspector%20Nose_Box_3D.jpg",
+        website: "https://www.swanpanasia.com/products/inspector-nose"
+    },
+    {
+        enName: "NIGHT OF WITNESSES",
+        zhName: "目擊者之夜",
+        age: "8+",
+        players: "3-6",
+        playTime: "10",
+        price: 490,
+        tags: "紙牌 陣營 言語 樂齡 語文 社會 綜合",
+        youtube: "https://www.youtube.com/watch?v=do9kypzitus",
+        imageUrl: "https://cdn.prod.website-files.com/575714cc825e8dbc6c83b98a/5f6d89f01b318a3b7ff66db5_Night%20of%20Witnesses_Box.jpg",
+        website: "https://www.swanpanasia.com/products/night-of-witnesses"
+    },
+    {
+        enName: "PALASTGEFLÜSTER",
+        zhName: "皇宮密語",
+        age: "10+",
+        players: "3-5",
+        playTime: "40-60",
+        price: 490,
+        tags: "紙牌 猜心 輕策略 社會 科技",
+        youtube: "https://www.youtube.com/watch?v=fOxUAX33_4E",
+        imageUrl: "https://cdn.prod.website-files.com/575714cc825e8dbc6c83b98a/5ab90ab2fc0a921abaadc3a0_PG_Box_CH.jpg",
+        website: "https://www.swanpanasia.com/products/palastgefluster"
+    },
+    {
+        enName: "STOLEN PAINTINGS",
+        zhName: "名畫神偷",
+        age: "8+",
+        players: "2-9",
+        playTime: "30",
+        price: 1090,
+        tags: "大腦 派對 樂齡 藝術 綜合",
+        youtube: "https://www.youtube.com/watch?v=lA7HiWxRsy4",
+        imageUrl: "https://cdn.prod.website-files.com/575714cc825e8dbc6c83b98a/5e954b2ce05ecd151a2ad654_StolenPainting_Box.jpg",
+        website: "https://www.swanpanasia.com/products/stolen-painting"
+    },
+    {
+        enName: "THIEVES!",
+        zhName: "江洋大盜",
+        age: "8+",
+        players: "3-6",
+        playTime: "20",
+        price: 0,
+        tags: "舒芸",
+        youtube: "https://www.youtube.com/watch?v=8kXtzqP94aE",
+        imageUrl: "https://cdn.prod.website-files.com/575714cc825e8dbc6c83b98a/5ab91499c6b5aa4627112c9d_Thieves_Box_3D.jpg",
+        website: "https://www.swanpanasia.com/products/thieves"
+    }
+];
+
+let currentSortColumn = -1;
+let currentSortDir = "asc";
+
+document.addEventListener("DOMContentLoaded", () => {
+    const tableBody = document.getElementById("tableBody");
+
+    boardgames.forEach(game => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${game.enName}</td>
+            <td>${game.zhName}</td>
+            <td>${game.age}</td>
+            <td>${game.players}</td>
+            <td>${game.playTime}</td>
+            <td>${game.price}</td>
+            <td>${game.tags}</td>
+            <td><a href="${game.youtube}" target="_blank">觀看影片</a></td>
+            <td><img src="${game.imageUrl}"></td>
+            <td><a href="${game.website}" target="_blank">網站連結</a></td>
+        `;
+
+        tableBody.appendChild(row);
+    });
+});
+
+function sortTable(n) {
+    const table = document.getElementById("boardgameTable");
+    const rowsArray = Array.from(table.rows).slice(1);
+
+    if (currentSortColumn === n) {
+        currentSortDir = currentSortDir === "asc" ? "desc" : "asc";
+    } else {
+        currentSortDir = "asc";
+    }
+    currentSortColumn = n;
+
+    rowsArray.sort((a, b) => {
+        const x = a.getElementsByTagName("TD")[n].innerText.toLowerCase();
+        const y = b.getElementsByTagName("TD")[n].innerText.toLowerCase();
+
+        if (x < y) return currentSortDir === "asc" ? -1 : 1;
+        if (x > y) return currentSortDir === "asc" ? 1 : -1;
+        return 0;
+    });
+
+    const tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = "";
+    rowsArray.forEach(row => tableBody.appendChild(row));
+}
+</script>
+
+</body>
+</html>
